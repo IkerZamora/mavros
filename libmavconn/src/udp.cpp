@@ -74,10 +74,9 @@ MAVConnUDP::MAVConnUDP(uint8_t system_id, uint8_t component_id,
 	if (remote_host != "") {
 		remote_exists = resolve_address_udp(io_service, channel, remote_host, remote_port, remote_ep);
 
-		if (remote_exists)
-			logInform(PFXd "Remote address: %s", channel, to_string_ss(remote_ep).c_str());
-		else
+		if (!remote_exists){
 			logWarn(PFXd "Remote address resolve failed.", channel);
+		}
 	}
 
 	try {
@@ -189,7 +188,7 @@ void MAVConnUDP::async_receive_end(error_code error, size_t bytes_transferred)
 	}
 
 	if (remote_ep != last_remote_ep) {
-		logInform(PFXd "Remote address: %s", channel, to_string_ss(remote_ep).c_str());
+		//logInform(PFXd "Remote address: %s", channel, to_string_ss(remote_ep).c_str());
 		remote_exists = true;
 		last_remote_ep = remote_ep;
 	}
